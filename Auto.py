@@ -87,5 +87,39 @@ def doPuzzle(puzzle):
             elif option == 3:
                 print("Closing program")
                 break
+def play(colour, c):
+    
+    boardval = 50
+    mistakes = []
+    if colour == 1:
+        s.make_moves_from_current_position([s.get_best_move()])
+    while True:
+        if ast.literal_eval(str(s.get_evaluation()))['value'] == 0:
+            break
+        
+        print(s.get_board_visual())
+        currpos = s.get_fen_position()
+        
+        move = input("Enter Move: ")
+        if move == "resign":
+            break
+        s.make_moves_from_current_position([move])
+        
+        if boardval - ast.literal_eval(str(s.get_evaluation()))['value'] > 150:
+            dbadd = "INSERT INTO Puzzles VALUES ('"+currpos+"', '"+move+"', 1)"
+            c.execute(dbadd)
+
+            
+        boardval = ast.literal_eval(str(s.get_evaluation()))['value']
+        s.make_moves_from_current_position([s.get_best_move()])
+
+        if ast.literal_eval(str(s.get_evaluation()))['value'] == 0:
+            dbadd = "INSERT INTO Puzzles VALUES ('"+currpos+"', '"+move+"', 1)"
+            c.execute(dbadd)
+            mistakes.append((currpos, move))
+            break
+
+    return mistakes
+
 
 
