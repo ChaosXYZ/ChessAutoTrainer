@@ -121,5 +121,11 @@ def play(colour, c):
 
     return mistakes
 
+def train(c):
+    c.execute("SELECT * FROM Puzzles WHERE  Counter = 1")
+    result = c.fetchall()
+    for i in result:
+        if doPuzzle(i) == 3:
+            break
 
 
