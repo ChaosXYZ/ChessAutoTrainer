@@ -22,3 +22,17 @@ def createTable(c):
                 Move text,
                 Counter integer
                 )""")
+
+def refute(FEN, Move):
+    s.set_fen_position(FEN)
+    s.make_moves_from_current_position([Move])
+    evaluation = ast.literal_eval(str(s.get_evaluation()))['value']
+    ply = 10
+    while ply != 0 or evaluation - ast.literal_eval(str(s.get_evaluation()))['value'] > 100:
+        print(s.get_best_move())
+        s.make_moves_from_current_position([s.get_best_move()])
+        print(s.get_board_visual())
+        time.sleep(1)
+        
+        ply -= 1
+
