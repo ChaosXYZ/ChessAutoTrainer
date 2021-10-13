@@ -36,3 +36,56 @@ def refute(FEN, Move):
         
         ply -= 1
 
+
+def doPuzzle(puzzle):
+    print("You are playing {}.".format(colour(puzzle[0])))
+    original = puzzle[0]
+    s.set_fen_position(original)
+    bestMove = s.get_best_move()
+    origeval = ast.literal_eval(str(s.get_evaluation()))['value']
+    print("In the game, you played {}. This was a mistake, find a better move.".format(puzzle[1]))
+
+    while True:
+        s.set_fen_position(original)
+        print(s.get_board_visual())
+        
+        move = input("Enter Move: ")
+    
+        s.make_moves_from_current_position([move])
+        print(s.get_board_visual())
+        if move == bestMove:
+            print("Well done! This is the best move.")
+            break
+
+        elif origeval - ast.literal_eval(str(s.get_evaluation()))['value'] > 100:
+            
+            print("That was a mistake. What would you like to do?")
+            option = int(input("1. Try Again\n2. See Refutation\n3. Give up\n4. Exit\n"))
+            if option == 4:
+                print("Closing Program")
+                return 3
+            elif option == 3:
+                print("The best move was {}.".format(s.get_best_move()))
+                break
+            elif option == 1:
+                continue
+            elif option == 2:
+                print("Refutation: \n")
+                refute(original, move)
+                break
+            else:
+                print("Invalid choice, closing program")
+                break
+        else:
+            print("Your move was satisfactory, it was not the best but it was not a mistake.")
+            option = int(input("1. Try Again\n2. Continue\n3. Exit\n"))
+            if option == 1:
+                continue
+            elif option == 2:
+                print("The correct move was {}.".format(bestMove))
+                break
+            elif option == 3:
+                print("Closing program")
+                break
+
+
