@@ -128,4 +128,23 @@ def train(c):
         if doPuzzle(i) == 3:
             break
 
+def main():
+    conn = sqlite3.connect('Puzzles.db')
+    c = conn.cursor()
+    try:
+        createTable(c)
+    except:
+        pass
+    mode = int(input("1. Play\n2. Train\nEnter: "))
+    if mode == 1:
+        side = int(input("0. White\n1. Black\nWhat colour? "))
+        play(0, c)
+        conn.commit()
+    elif mode == 2:
+        train(c)
+        
+            
+
+    conn.close()
+
 
